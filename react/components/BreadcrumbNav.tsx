@@ -20,8 +20,15 @@ const BreadcrumbNav = () => {
 
   pathNames.pop();
 
-  const title = (value: string) => {
-    return value[0].toUpperCase() + value.substring(1);
+  const handleString = (value: string) => {
+    const words = value.split("-");
+
+    let updatedWords: string[] = [];
+    words.map((word) =>
+      updatedWords.push(word[0].toUpperCase() + word.substring(1))
+    );
+
+    return updatedWords.join(" ");
   };
 
   return (
@@ -31,14 +38,16 @@ const BreadcrumbNav = () => {
           <Fragment key={idx}>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href={idx === 0 ? `/${item}` : item}>{title(item)}</Link>
+                <Link href={idx === 0 ? `/${item}` : item}>
+                  {handleString(item)}
+                </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
           </Fragment>
         ))}
         <BreadcrumbItem>
-          <BreadcrumbPage>{title(currentPage)}</BreadcrumbPage>
+          <BreadcrumbPage>{handleString(currentPage)}</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
