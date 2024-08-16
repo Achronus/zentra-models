@@ -32,15 +32,25 @@ const ProfileMenu = ({ items }: ProfileMenuProps) => {
           <Fragment key={groupIdx}>
             {group.map((item, itemIndex) =>
               item.type === "label" ? (
-                <DropdownMenuLabel key={itemIndex}>
+                <DropdownMenuLabel
+                  key={itemIndex}
+                  className="flex items-center gap-2"
+                >
+                  {item.icon && item.icon}
                   {item.text}
                 </DropdownMenuLabel>
               ) : item.type === "item" ? (
                 <DropdownMenuItem key={itemIndex}>
                   {item.url ? (
-                    <Link href={item.url}>{item.text}</Link>
+                    <Link href={item.url} className="flex items-center gap-2">
+                      {item.icon && item.icon}
+                      {item.text}
+                    </Link>
                   ) : (
-                    item.text
+                    <div className="flex items-center gap-2">
+                      {item.icon && item.icon}
+                      {item.text}
+                    </div>
                   )}
                 </DropdownMenuItem>
               ) : null

@@ -18,7 +18,6 @@ type TopNavbarProps = {
   links: NavLink[];
   centerLinks?: boolean;
   hasSearch?: boolean;
-  hideProfileMenu?: boolean;
   searchPlaceholder?: string;
   hideThemeToggle?: boolean;
   profileMenuItems?: ProfileMenuItem[][];
@@ -89,9 +88,8 @@ const TopNavbar = ({
   links,
   centerLinks,
   hasSearch,
-  hideProfileMenu,
   searchPlaceholder,
-  hideThemeToggle = false,
+  hideThemeToggle,
   profileMenuItems,
 }: TopNavbarProps) => {
   const pathname = usePathname();
@@ -131,12 +129,11 @@ const TopNavbar = ({
         {hasSearch && (
           <SearchBox
             placeholder={searchPlaceholder ? searchPlaceholder : "Search..."}
+            formStyles="ml-auto flex-1 sm:flex-initial"
           />
         )}
         {!hideThemeToggle && <ThemeToggle />}
-        {!hideProfileMenu && profileMenuItems && (
-          <ProfileMenu items={profileMenuItems} />
-        )}
+        {profileMenuItems && <ProfileMenu items={profileMenuItems} />}
       </section>
     </header>
   );
