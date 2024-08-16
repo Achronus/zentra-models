@@ -15,7 +15,7 @@ type ThemeToggleProps = {
   hasBorder?: boolean;
 };
 
-export function ThemeToggle({ hasBorder }: ThemeToggleProps) {
+const ThemeToggle = ({ hasBorder }: ThemeToggleProps) => {
   const { setTheme } = useTheme();
 
   return (
@@ -40,4 +40,6 @@ export function ThemeToggle({ hasBorder }: ThemeToggleProps) {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};
+
+export default ThemeToggle;

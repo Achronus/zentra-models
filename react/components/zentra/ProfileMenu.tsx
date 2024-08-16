@@ -1,4 +1,6 @@
 import { CircleUser } from "lucide-react";
+import Link from "next/link";
+import { Fragment } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -11,8 +13,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { ProfileMenuItem } from "@/types/core";
-import Link from "next/link";
-import { Fragment } from "react";
 
 type ProfileMenuProps = {
   items: ProfileMenuItem[][];

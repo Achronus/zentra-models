@@ -4,9 +4,6 @@ import { PanelLeft } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import ProfileMenu from "@/components/ProfileMenu";
-import SearchBox from "@/components/SearchBox";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
@@ -15,8 +12,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  BreadcrumbNav,
+  ProfileMenu,
+  SearchBox,
+  ThemeToggle,
+} from "@/components/zentra";
 
-import BreadcrumbNav from "@/components/BreadcrumbNav";
 import { cn } from "@/lib/utils";
 import { IconNavLink, ProfileMenuItem } from "@/types/core";
 
