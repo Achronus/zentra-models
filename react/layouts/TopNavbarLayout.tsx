@@ -13,9 +13,12 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { NavLink, ProfileMenuItem } from "@/types/core";
 
-type TopNavbarProps = {
+type CoreNavbarProps = {
   logo: React.ReactNode;
-  links: NavLink[];
+  navLinks: NavLink[];
+};
+
+type TopNavbarProps = CoreNavbarProps & {
   centerLinks?: boolean;
   hasSearch?: boolean;
   searchPlaceholder?: string;
@@ -23,9 +26,8 @@ type TopNavbarProps = {
   profileMenuItems?: ProfileMenuItem[][];
 };
 
-type MobileNavProps = {
-  logo: React.ReactNode;
-  links: NavLink[];
+type TopNavbarLayoutProps = TopNavbarProps & {
+  children: React.ReactNode;
 };
 
 type LogoProps = {
@@ -49,7 +51,7 @@ const Logo = ({ isMobile, children }: LogoProps) => {
   );
 };
 
-const MobileNav = ({ logo, links }: MobileNavProps) => {
+const MobileNav = ({ logo, navLinks }: CoreNavbarProps) => {
   const pathname = usePathname();
 
   return (
@@ -63,7 +65,7 @@ const MobileNav = ({ logo, links }: MobileNavProps) => {
       <SheetContent side="left">
         {logo}
         <nav className="grid gap-6 text-lg font-medium">
-          {links.map((link) => (
+          {navLinks.map((link) => (
             <Link
               key={link.name}
               href={link.url}
@@ -85,7 +87,7 @@ const MobileNav = ({ logo, links }: MobileNavProps) => {
 
 const TopNavbar = ({
   logo,
-  links,
+  navLinks: links,
   centerLinks,
   hasSearch,
   searchPlaceholder,
@@ -119,7 +121,7 @@ const TopNavbar = ({
           </Link>
         ))}
       </nav>
-      <MobileNav links={links} logo={<Logo isMobile>{logo}</Logo>} />
+      <MobileNav navLinks={links} logo={<Logo isMobile>{logo}</Logo>} />
       <section
         className={cn(
           "flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4",
@@ -139,4 +141,32 @@ const TopNavbar = ({
   );
 };
 
-export default TopNavbar;
+const TopNavbarLayout = ({
+  logo,
+  navLinks,
+  centerLinks,
+  hasSearch,
+  searchPlaceholder,
+  hideThemeToggle,
+  profileMenuItems,
+  children,
+}: TopNavbarLayoutProps) => {
+  return (
+    <div className="flex min-h-screen w-full flex-col">
+      <TopNavbar
+        centerLinks={centerLinks}
+        logo={logo}
+        navLinks={navLinks}
+        hasSearch={hasSearch}
+        searchPlaceholder={searchPlaceholder}
+        profileMenuItems={profileMenuItems}
+        hideThemeToggle={hideThemeToggle}
+      />
+      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+        {children}
+      </main>
+    </div>
+  );
+};
+
+export default TopNavbarLayout;
