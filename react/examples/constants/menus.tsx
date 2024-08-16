@@ -94,3 +94,11 @@ export const iconNavLinks: IconNavLink[] = [
     icon: <LineChart size={20} />,
   },
 ];
+
+export const iconBottomNavLinks: IconNavLink[] = [
+  {
+    url: "#",
+    name: "Settings",
+    icon: <Settings size={20} />,
+  },
+];

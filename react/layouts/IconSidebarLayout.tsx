@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import ProfileMenu from "@/components/ProfileMenu";
 import SearchBox from "@/components/SearchBox";
 import { ThemeToggle } from "@/components/ThemeToggle";
-
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
@@ -24,6 +23,7 @@ import { IconNavLink, ProfileMenuItem } from "@/types/core";
 type CoreNavbarProps = {
   logo: React.ReactNode;
   navLinks: IconNavLink[];
+  bottomLinks?: IconNavLink[];
 };
 
 type LogoProps = {
@@ -106,7 +106,7 @@ const NavigationLinks = ({ navLinks, isMobile }: NavMenuProps) => {
   );
 };
 
-const MobileNavbar = ({ logo, navLinks }: CoreNavbarProps) => {
+const MobileNavbar = ({ logo, navLinks, bottomLinks }: CoreNavbarProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -115,23 +115,33 @@ const MobileNavbar = ({ logo, navLinks }: CoreNavbarProps) => {
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="sm:max-w-xs">
+      <SheetContent side="left" className="flex flex-col h-full sm:max-w-xs">
         <nav className="grid gap-6 text-lg font-medium">
           <Logo isMobile>{logo}</Logo>
           <NavigationLinks navLinks={navLinks} isMobile />
         </nav>
+        {bottomLinks && (
+          <nav className="grid gap-6 text-lg font-medium mt-auto">
+            <NavigationLinks navLinks={bottomLinks} isMobile />
+          </nav>
+        )}
       </SheetContent>
     </Sheet>
   );
 };
 
-const Sidebar = ({ logo, navLinks }: CoreNavbarProps) => {
+const Sidebar = ({ logo, navLinks, bottomLinks }: CoreNavbarProps) => {
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
         <Logo isMobile>{logo}</Logo>
         <NavigationLinks navLinks={navLinks} />
       </nav>
+      {bottomLinks && (
+        <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+          <NavigationLinks navLinks={bottomLinks} />
+        </nav>
+      )}
     </aside>
   );
 };
@@ -139,6 +149,7 @@ const Sidebar = ({ logo, navLinks }: CoreNavbarProps) => {
 const Topbar = ({
   logo,
   navLinks,
+  bottomLinks,
   hasSearch,
   hasBreadcrumbNav,
   searchPlaceholder,
@@ -147,7 +158,7 @@ const Topbar = ({
 }: TopbarProps) => {
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-      <MobileNavbar logo={logo} navLinks={navLinks} />
+      <MobileNavbar logo={logo} navLinks={navLinks} bottomLinks={bottomLinks} />
       {hasBreadcrumbNav && <BreadcrumbNav />}
       <section className="flex ml-auto gap-4">
         {hasSearch && (
@@ -166,6 +177,7 @@ const Topbar = ({
 const IconSidebarLayout = ({
   logo,
   navLinks,
+  bottomLinks,
   hasSearch,
   hasBreadcrumbNav,
   searchPlaceholder,
@@ -175,11 +187,12 @@ const IconSidebarLayout = ({
 }: IconSidebarLayoutProps) => {
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <Sidebar logo={logo} navLinks={navLinks} />
+      <Sidebar logo={logo} navLinks={navLinks} bottomLinks={bottomLinks} />
       <section className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         <Topbar
           logo={logo}
           navLinks={navLinks}
+          bottomLinks={bottomLinks}
           hasSearch={hasSearch}
           hasBreadcrumbNav={hasBreadcrumbNav}
           searchPlaceholder={searchPlaceholder}
