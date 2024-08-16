@@ -30,6 +30,10 @@ type TopNavbarLayoutProps = TopNavbarProps & {
   children: React.ReactNode;
 };
 
+type NavMenuProps = {
+  navLinks: NavLink[];
+};
+
 type LogoProps = {
   children: React.ReactNode;
   isMobile?: boolean;
@@ -51,9 +55,28 @@ const Logo = ({ isMobile, children }: LogoProps) => {
   );
 };
 
-const MobileNav = ({ logo, navLinks }: CoreNavbarProps) => {
+const NavigationLinks = ({ navLinks }: NavMenuProps) => {
   const pathname = usePathname();
 
+  return (
+    <>
+      {navLinks.map((link) => (
+        <Link
+          key={link.name}
+          href={link.url}
+          className={cn(
+            "transition-colors hover:text-foreground",
+            pathname === link.url ? "text-foreground" : "text-muted-foreground"
+          )}
+        >
+          {link.name}
+        </Link>
+      ))}
+    </>
+  );
+};
+
+const MobileNav = ({ logo, navLinks }: CoreNavbarProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -65,20 +88,7 @@ const MobileNav = ({ logo, navLinks }: CoreNavbarProps) => {
       <SheetContent side="left">
         {logo}
         <nav className="grid gap-6 text-lg font-medium">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.url}
-              className={cn(
-                "transition-colors hover:text-foreground",
-                pathname === link.url
-                  ? "text-foreground"
-                  : "text-muted-foreground"
-              )}
-            >
-              {link.name}
-            </Link>
-          ))}
+          <NavigationLinks navLinks={navLinks} />
         </nav>
       </SheetContent>
     </Sheet>
@@ -87,15 +97,13 @@ const MobileNav = ({ logo, navLinks }: CoreNavbarProps) => {
 
 const TopNavbar = ({
   logo,
-  navLinks: links,
+  navLinks,
   centerLinks,
   hasSearch,
   searchPlaceholder,
   hideThemeToggle,
   profileMenuItems,
 }: TopNavbarProps) => {
-  const pathname = usePathname();
-
   return (
     <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <Logo>{logo}</Logo>
@@ -106,22 +114,9 @@ const TopNavbar = ({
           centerLinks && "md:w-full md:justify-center"
         )}
       >
-        {links.map((link) => (
-          <Link
-            key={link.name}
-            href={link.url}
-            className={cn(
-              "transition-colors hover:text-foreground",
-              pathname === link.url
-                ? "text-foreground"
-                : "text-muted-foreground"
-            )}
-          >
-            {link.name}
-          </Link>
-        ))}
+        <NavigationLinks navLinks={navLinks} />
       </nav>
-      <MobileNav navLinks={links} logo={<Logo isMobile>{logo}</Logo>} />
+      <MobileNav navLinks={navLinks} logo={<Logo isMobile>{logo}</Logo>} />
       <section
         className={cn(
           "flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4",

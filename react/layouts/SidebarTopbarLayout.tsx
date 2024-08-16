@@ -35,6 +35,11 @@ type LogoProps = {
   isMobile?: boolean;
 };
 
+type NavMenuProps = {
+  navLinks: NavLink[];
+  isMobile?: boolean;
+};
+
 type SidebarTopbarLayoutProps = TopNavbarProps &
   SidebarProps & {
     children: React.ReactNode;
@@ -63,30 +68,41 @@ const Logo = ({ isMobile, hasNotifications, children }: LogoProps) => {
   );
 };
 
-const SideNavbar = ({ logo, navLinks, hasNotifications }: SidebarProps) => {
+const NavigationLinks = ({ navLinks, isMobile }: NavMenuProps) => {
   const pathname = usePathname();
 
+  return (
+    <>
+      {navLinks.map((link) => (
+        <Link
+          key={link.name}
+          href={link.url}
+          className={cn(
+            "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
+            isMobile
+              ? "mx-[-0.65rem] hover:text-foreground"
+              : "hover:text-primary",
+            pathname === link.url
+              ? cn("bg-muted", isMobile ? "text-foreground" : "text-primary")
+              : "text-muted-foreground"
+          )}
+        >
+          {link.icon && link.icon}
+          {link.name}
+        </Link>
+      ))}
+    </>
+  );
+};
+
+const SideNavbar = ({ logo, navLinks, hasNotifications }: SidebarProps) => {
   return (
     <aside className="hidden border-r bg-muted/40 md:block">
       <div className="flex h-full max-h-screen flex-col gap-2">
         <Logo hasNotifications={hasNotifications}>{logo}</Logo>
         <div className="flex-1">
           <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.url}
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
-                  pathname === link.url
-                    ? "bg-muted text-primary"
-                    : "text-muted-foreground"
-                )}
-              >
-                {link.icon && link.icon}
-                {link.name}
-              </Link>
-            ))}
+            <NavigationLinks navLinks={navLinks} />
           </nav>
         </div>
       </div>
@@ -94,9 +110,7 @@ const SideNavbar = ({ logo, navLinks, hasNotifications }: SidebarProps) => {
   );
 };
 
-const MobileNavbar = ({ logo, navLinks: links }: CoreNavProps) => {
-  const pathname = usePathname();
-
+const MobileNavbar = ({ logo, navLinks }: CoreNavProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -108,21 +122,7 @@ const MobileNavbar = ({ logo, navLinks: links }: CoreNavProps) => {
       <SheetContent side="left" className="flex flex-col">
         <nav className="grid gap-2 text-lg font-medium">
           <Logo isMobile>{logo}</Logo>
-          {links.map((link) => (
-            <Link
-              key={link.name}
-              href={link.url}
-              className={cn(
-                "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground",
-                pathname === link.url
-                  ? "bg-muted text-foreground"
-                  : "text-muted-foreground"
-              )}
-            >
-              {link.icon && link.icon}
-              {link.name}
-            </Link>
-          ))}
+          <NavigationLinks navLinks={navLinks} isMobile />
         </nav>
       </SheetContent>
     </Sheet>
