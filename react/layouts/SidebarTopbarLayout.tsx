@@ -131,7 +131,7 @@ const MobileNavbar = ({ logo, navLinks }: CoreNavProps) => {
 
 const TopNavbar = ({
   logo,
-  navLinks: links,
+  navLinks,
   hasSearch,
   searchPlaceholder,
   hideThemeToggle,
@@ -139,11 +139,11 @@ const TopNavbar = ({
 }: TopNavbarProps) => {
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-      <MobileNavbar logo={logo} navLinks={links} />
+      <MobileNavbar logo={logo} navLinks={navLinks} />
       <div className="w-full flex-1">
         {hasSearch && (
           <SearchBox
-            placeholder={searchPlaceholder ? searchPlaceholder : "Search..."}
+            placeholder={searchPlaceholder}
             inputStyles="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:1/2 xl:w-1/3"
           />
         )}

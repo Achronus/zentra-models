@@ -125,7 +125,7 @@ const TopNavbar = ({
       >
         {hasSearch && (
           <SearchBox
-            placeholder={searchPlaceholder ? searchPlaceholder : "Search..."}
+            placeholder={searchPlaceholder}
             formStyles="ml-auto flex-1 sm:flex-initial"
           />
         )}
