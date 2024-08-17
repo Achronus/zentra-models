@@ -1,14 +1,5 @@
 "use client";
 
-import { Row, Table } from "@tanstack/react-table";
-import {
-  Download,
-  File,
-  FolderOutput,
-  ListFilter,
-  PlusCircle,
-} from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -19,25 +10,58 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import { Row, Table } from "@tanstack/react-table";
+import {
+  Download,
+  File,
+  FolderOutput,
+  ListFilter,
+  PlusCircle,
+  RotateCcw,
+} from "lucide-react";
+import { Badge } from "../ui/badge";
 import SearchFilter from "./SearchFilter";
 import ViewOptions from "./ViewOptions";
 
-type DataTableToolbarProps<TData> = {
+type CoreProps<TData> = {
   table: Table<TData>;
-  hideFilter?: boolean;
+};
+
+type DataTableToolbarProps<TData> = CoreProps<TData> & {
   hideExport?: boolean;
   hideAddItem?: boolean;
   hideViewOptions?: boolean;
   searchFilterColumn?: string;
+  categoryFilterColumn?: string;
   extraFilterOptions?: React.ReactNode;
 };
 
-type ExportProps<TData> = {
-  table: Table<TData>;
+type CategoryFilterProps<TData> = CoreProps<TData> & {
+  column: string;
 };
 
-const Filter = () => {
+function CategoryFilter<TData>({ table, column }: CategoryFilterProps<TData>) {
+  const col = table.getColumn(column);
+  const options = col?.getFacetedUniqueValues();
+  const selectedValues = new Set(col?.getFilterValue() as string[]);
+
+  const toggleFilter = (option: string) => {
+    if (selectedValues.has(option)) {
+      selectedValues.delete(option);
+    } else {
+      selectedValues.add(option);
+    }
+
+    const updatedFilterValues = Array.from(selectedValues);
+    col?.setFilterValue(
+      updatedFilterValues.length > 0 ? updatedFilterValues : undefined
+    );
+  };
+
+  const resetFilter = () => {
+    // TODO: THIS
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -51,15 +75,32 @@ const Filter = () => {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Filter by</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuCheckboxItem checked>Active</DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem>Archived</DropdownMenuCheckboxItem>
+        {options &&
+          Array.from(options.keys()).map((option) => (
+            <DropdownMenuCheckboxItem
+              key={option}
+              className="cursor-pointer"
+              checked={selectedValues.has(option)}
+              onCheckedChange={() => toggleFilter(option)}
+            >
+              {option}
+              <Badge className="ml-auto">{options.get(option)}</Badge>
+            </DropdownMenuCheckboxItem>
+          ))}
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          className="flex gap-2 items-center cursor-pointer"
+          onClick={resetFilter}
+        >
+          Reset
+          <RotateCcw size={16} className="ml-auto" />
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
-};
+}
 
-function Export<TData>({ table }: ExportProps<TData>) {
+function Export<TData>({ table }: CoreProps<TData>) {
   function convertToCSV<TData>(rows: Row<TData>[]) {
     if (rows.length === 0) {
       return "";
@@ -139,7 +180,7 @@ const AddItem = () => {
 
 export default function DataTableToolbar<TData>({
   table,
-  hideFilter,
+  categoryFilterColumn,
   hideExport,
   hideAddItem,
   hideViewOptions,
@@ -153,7 +194,9 @@ export default function DataTableToolbar<TData>({
       )}
       {extraFilterOptions}
       <section id="actions" className="ml-auto flex items-center gap-2">
-        {!hideFilter && <Filter />}
+        {categoryFilterColumn && (
+          <CategoryFilter table={table} column={categoryFilterColumn} />
+        )}
         {!hideExport && <Export table={table} />}
         {!hideViewOptions && <ViewOptions table={table} />}
         {!hideAddItem && <AddItem />}

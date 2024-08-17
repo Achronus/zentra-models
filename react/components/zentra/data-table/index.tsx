@@ -9,6 +9,7 @@ import {
   VisibilityState,
   flexRender,
   getCoreRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
@@ -65,11 +66,11 @@ type DataTableProps<TData, TValue> = {
   actions?: Action[];
   title?: string;
   description?: string;
-  hideFilter?: boolean;
   hideExport?: boolean;
   hideAddItem?: boolean;
   hideViewOptions?: boolean;
   searchFilterColumn?: string;
+  categoryFilterColumn?: string;
   extraFilterOptions?: React.ReactNode;
 };
 
@@ -105,11 +106,11 @@ export default function DataTable<TData, TValue>({
   actions,
   title,
   description,
-  hideFilter,
   hideExport,
   hideAddItem,
   hideViewOptions,
   searchFilterColumn,
+  categoryFilterColumn,
   extraFilterOptions,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -175,6 +176,7 @@ export default function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    getFacetedUniqueValues: getFacetedUniqueValues(),
     state: {
       sorting,
       columnFilters,
@@ -194,11 +196,11 @@ export default function DataTable<TData, TValue>({
       <CardContent className={cn(!title && !description && "mt-6")}>
         <DataTableToolbar
           table={table}
-          hideFilter={hideFilter}
           hideExport={hideExport}
           hideAddItem={hideAddItem}
           hideViewOptions={hideViewOptions}
           searchFilterColumn={searchFilterColumn}
+          categoryFilterColumn={categoryFilterColumn}
           extraFilterOptions={extraFilterOptions}
         />
         <div className="rounded-md border">
