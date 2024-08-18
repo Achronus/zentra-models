@@ -165,6 +165,38 @@ export default function DataTable<TData, TValue>({
     addActionColumns(actions);
   }, [actions]);
 
+  useEffect(() => {
+    const addFilterFn = (column?: string) => {
+      if (!column) {
+        return;
+      }
+
+      const columnExists = tableColumns.some(
+        // @ts-ignore
+        (col) => col.id === column || col.accessorKey === column
+      );
+
+      if (!columnExists) {
+        throw new Error(
+          `'${categoryFilterColumn}' does not exist in 'columns'!`
+        );
+      }
+
+      setTableColumns((prevColumns) =>
+        prevColumns.map((col) =>
+          columnExists
+            ? {
+                ...col,
+                filterFn: (row, id, value) => value.includes(row.getValue(id)),
+              }
+            : col
+        )
+      );
+    };
+
+    addFilterFn(categoryFilterColumn);
+  }, [categoryFilterColumn]);
+
   const table = useReactTable({
     data,
     columns: tableColumns,
