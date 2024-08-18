@@ -59,7 +59,7 @@ function CategoryFilter<TData>({ table, column }: CategoryFilterProps<TData>) {
   };
 
   const resetFilter = () => {
-    // TODO: THIS
+    col?.setFilterValue(undefined);
   };
 
   return (
