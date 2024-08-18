@@ -195,7 +195,7 @@ export default function DataTable<TData, TValue>({
     };
 
     addFilterFn(categoryFilterColumn);
-  }, [categoryFilterColumn]);
+  }, [categoryFilterColumn, columns]);
 
   const table = useReactTable({
     data,
