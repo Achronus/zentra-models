@@ -33,7 +33,7 @@ type DataTableToolbarProps<TData> = CoreProps<TData> & {
   searchFilterColumn?: string;
   categoryFilterColumn?: string;
   extraFilterOptions?: React.ReactNode;
-  addBtnOnClick?: () => void;
+  addItemOnClick?: () => void;
 };
 
 type CategoryFilterProps<TData> = CoreProps<TData> & {
@@ -185,7 +185,7 @@ export default function DataTableToolbar<TData>({
   hideViewOptions,
   searchFilterColumn,
   extraFilterOptions,
-  addBtnOnClick,
+  addItemOnClick,
 }: DataTableToolbarProps<TData>) {
   return (
     <div className="flex items-center mb-4 gap-2 flex-col sm:flex-row">
@@ -199,7 +199,7 @@ export default function DataTableToolbar<TData>({
         )}
         {!hideExport && <Export table={table} />}
         {!hideViewOptions && <ViewOptions table={table} />}
-        {addBtnOnClick && <AddItem handleOnClick={addBtnOnClick} />}
+        {addItemOnClick && <AddItem handleOnClick={addItemOnClick} />}
       </section>
     </div>
   );
