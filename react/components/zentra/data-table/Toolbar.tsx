@@ -29,11 +29,11 @@ type CoreProps<TData> = {
 
 type DataTableToolbarProps<TData> = CoreProps<TData> & {
   hideExport?: boolean;
-  hideAddItem?: boolean;
   hideViewOptions?: boolean;
   searchFilterColumn?: string;
   categoryFilterColumn?: string;
   extraFilterOptions?: React.ReactNode;
+  addBtnOnClick?: () => void;
 };
 
 type CategoryFilterProps<TData> = CoreProps<TData> & {
@@ -167,9 +167,9 @@ function Export<TData>({ table }: CoreProps<TData>) {
   );
 }
 
-const AddItem = () => {
+const AddItem = ({ handleOnClick }: { handleOnClick: () => void }) => {
   return (
-    <Button size="sm" className="h-8 gap-1">
+    <Button size="sm" className="h-8 gap-1" onClick={handleOnClick}>
       <PlusCircle className="h-3.5 w-3.5" />
       <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
         Add Item
@@ -182,24 +182,24 @@ export default function DataTableToolbar<TData>({
   table,
   categoryFilterColumn,
   hideExport,
-  hideAddItem,
   hideViewOptions,
   searchFilterColumn,
   extraFilterOptions,
+  addBtnOnClick,
 }: DataTableToolbarProps<TData>) {
   return (
-    <div className="flex items-center mb-4 gap-2">
+    <div className="flex items-center mb-4 gap-2 flex-col sm:flex-row">
       {searchFilterColumn && (
         <SearchFilter table={table} column={searchFilterColumn} />
       )}
       {extraFilterOptions}
-      <section id="actions" className="ml-auto flex items-center gap-2">
+      <section id="actions" className="sm:ml-auto flex items-center gap-2">
         {categoryFilterColumn && (
           <CategoryFilter table={table} column={categoryFilterColumn} />
         )}
         {!hideExport && <Export table={table} />}
         {!hideViewOptions && <ViewOptions table={table} />}
-        {!hideAddItem && <AddItem />}
+        {addBtnOnClick && <AddItem handleOnClick={addBtnOnClick} />}
       </section>
     </div>
   );

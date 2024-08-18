@@ -67,11 +67,11 @@ type DataTableProps<TData, TValue> = {
   title?: string;
   description?: string;
   hideExport?: boolean;
-  hideAddItem?: boolean;
   hideViewOptions?: boolean;
   searchFilterColumn?: string;
   categoryFilterColumn?: string;
   extraFilterOptions?: React.ReactNode;
+  addBtnOnClick?: () => void;
 };
 
 const ActionMenu = ({ actions }: { actions: Action[] }) => {
@@ -107,11 +107,11 @@ export default function DataTable<TData, TValue>({
   title,
   description,
   hideExport,
-  hideAddItem,
   hideViewOptions,
   searchFilterColumn,
   categoryFilterColumn,
   extraFilterOptions,
+  addBtnOnClick,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -229,11 +229,11 @@ export default function DataTable<TData, TValue>({
         <DataTableToolbar
           table={table}
           hideExport={hideExport}
-          hideAddItem={hideAddItem}
           hideViewOptions={hideViewOptions}
           searchFilterColumn={searchFilterColumn}
           categoryFilterColumn={categoryFilterColumn}
           extraFilterOptions={extraFilterOptions}
+          addBtnOnClick={addBtnOnClick}
         />
         <div className="rounded-md border">
           <Table>
