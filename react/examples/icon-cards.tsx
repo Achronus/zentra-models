@@ -1,4 +1,5 @@
-import { IconCardSection, IconCardType } from "@/components/zentra/IconCard";
+import { IconCardSection } from "@/components/zentra/IconCard";
+import { IconCardType } from "@/types/card";
 import { Heart, Link, PanelsTopLeft } from "lucide-react";
 
 export const FeaturedCards: IconCardType[] = [

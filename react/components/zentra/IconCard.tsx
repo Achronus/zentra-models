@@ -5,41 +5,14 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-
-export type IconCardDetails = {
-  title: string;
-  desc: string;
-  icon: React.ReactElement;
-};
-
-export type IconCardStyles = {
-  card?: string;
-  topLine?: string;
-  leftLine?: string;
-  cardHeader?: string;
-  headerContainer?: string;
-  headerWrapper?: string;
-  iconContainer?: string;
-  titleContainer?: string;
-  cardContent?: string;
-  cardDescription?: string;
-};
-
-export type IconCardType = IconCardDetails & {
-  styles?: IconCardStyles;
-};
+import { IconCardType } from "@/types/card";
 
 type IconCardSectionProps = {
   cards: IconCardType[];
   className?: string;
 };
 
-type IconCardProps = {
-  title: string;
-  desc: string;
-  icon: React.ReactElement;
-  styles?: IconCardStyles;
-};
+type IconCardProps = IconCardType;
 
 export const IconCardSection = ({ cards, className }: IconCardSectionProps) => {
   return (
